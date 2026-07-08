@@ -1,14 +1,14 @@
 local M = {}
-local storage = require("my_cool_plugin.storage")
-local config = require("my_cool_plugin.config")
+local storage = require("ting.storage")
+local config = require("ting.config")
 
-local namespace_id = vim.api.nvim_create_namespace("my_cool_plugin")
+local namespace_id = vim.api.nvim_create_namespace("ting")
 
 -- Notification sidebar state
 local notif = {
   buf = nil,
   win = nil,
-  ns = vim.api.nvim_create_namespace("my_cool_plugin_notifs"),
+  ns = vim.api.nvim_create_namespace("ting_notifs"),
 }
 
 local function ensure_notif_window()
@@ -22,7 +22,7 @@ local function ensure_notif_window()
   notif.buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_option(notif.buf, "bufhidden", "wipe")
   vim.api.nvim_buf_set_option(notif.buf, "modifiable", true)
-  vim.api.nvim_buf_set_option(notif.buf, "filetype", "my_cool_plugin_notifications")
+  vim.api.nvim_buf_set_option(notif.buf, "filetype", "ting_notifications")
 
   local win_opts = {
     relative = "editor",
@@ -142,17 +142,17 @@ function M.open_input_window()
       storage.delete_comment(file_path, line_num)
       vim.api.nvim_win_close(float_win, true)
       M.refresh_marks(bufnr)
-      M.notify("Comment deleted!", vim.log.levels.INFO, { title = "My Plugin" })
+      M.notify("Comment deleted!", vim.log.levels.INFO, { title = "Ting" })
       return
     end
 
     storage.add_comment(file_path, line_num, context, comment_text)
     vim.api.nvim_win_close(float_win, true)
     M.refresh_marks(bufnr)
-    M.notify("Comment saved!", vim.log.levels.INFO, { title = "My Plugin" })
+    M.notify("Comment saved!", vim.log.levels.INFO, { title = "Ting" })
 
     -- Trigger the review and planning workflow
-    local agents = require("my_cool_plugin.agents")
+    local agents = require("ting.agents")
     agents.trigger_review_and_plan(comment_text, file_path)
   end
 
@@ -166,7 +166,7 @@ function M.open_input_window()
     storage.delete_comment(file_path, line_num)
     vim.api.nvim_win_close(float_win, true)
     M.refresh_marks(bufnr)
-    M.notify("Comment deleted!", vim.log.levels.INFO, { title = "My Plugin" })
+    M.notify("Comment deleted!", vim.log.levels.INFO, { title = "Ting" })
   end
 
   -- Keymaps for floating buffer

@@ -76,9 +76,8 @@ vim.g.clipboard = {
   },
 }
 
--- leader key
 vim.g.mapleader = " "
 
 -- Load the plugin module
-require("my_cool_plugin").setup()
+require("ting").setup()
 

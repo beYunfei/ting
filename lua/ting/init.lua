@@ -1,8 +1,8 @@
 local M = {}
 
-local config = require("my_cool_plugin.config")
-local ui = require("my_cool_plugin.ui")
-local agents = require("my_cool_plugin.agents")
+local config = require("ting.config")
+local ui = require("ting.ui")
+local agents = require("ting.agents")
 
 M.setup = function(opts)
   config.setup(opts)
@@ -14,7 +14,7 @@ M.setup = function(opts)
   vim.keymap.set('n', keys.pm_agent, agents.trigger_pm_agent, { desc = "Trigger PM Agent" })
   
   -- Autocommands to refresh marks
-  local group = vim.api.nvim_create_augroup("MyCoolPluginGroup", { clear = true })
+  local group = vim.api.nvim_create_augroup("TingPluginGroup", { clear = true })
   
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
     group = group,

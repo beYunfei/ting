@@ -1,7 +1,7 @@
 local M = {}
-local storage = require("my_cool_plugin.storage")
-local config = require("my_cool_plugin.config")
-local ui = require("my_cool_plugin.ui")
+local storage = require("ting.storage")
+local config = require("ting.config")
+local ui = require("ting.ui")
 
 -- Helper to make asynchronous curl requests to Ollama
 local function query_ollama(prompt, callback)
@@ -53,7 +53,7 @@ function M.trigger_tech_writer()
   local comments = storage.get_comments_for_file(file_path)
 
   if vim.tbl_isempty(comments) then
-    ui.notify("No comments found for this file. Add comments to trigger the Technical Writer agent.", vim.log.levels.WARN, { title = "My Plugin" })
+    ui.notify("No comments found for this file. Add comments to trigger the Technical Writer agent.", vim.log.levels.WARN, { title = "Ting" })
     return
   end
 
@@ -68,7 +68,7 @@ function M.trigger_tech_writer()
   prompt = prompt .. "\nFile Content:\n" .. file_content
   prompt = prompt .. "\n\nPlease output ONLY the raw updated file content. Do not include markdown blocks or any other text. I just want the code."
 
-  ui.notify("Triggering Technical Writer Agent for " .. vim.fn.expand("%:t") .. " via Ollama...", vim.log.levels.INFO, { title = "My Plugin" })
+  ui.notify("Triggering Technical Writer Agent for " .. vim.fn.expand("%:t") .. " via Ollama...", vim.log.levels.INFO, { title = "Ting" })
 
   query_ollama(prompt, function(response)
     vim.schedule(function()
@@ -89,7 +89,7 @@ function M.trigger_tech_writer()
 end
 
 function M.trigger_pm_agent()
-  ui.notify("Opening PM Agent chat...", vim.log.levels.INFO, { title = "My Plugin" })
+  ui.notify("Opening PM Agent chat...", vim.log.levels.INFO, { title = "Ting" })
 
   vim.cmd("split")
   local chat_buf = vim.api.nvim_create_buf(false, true)
@@ -152,7 +152,7 @@ function M.confirm_task(buf, project_dir, old_win)
   local temp_file = pdir .. "/temp_architecture.md"
   vim.fn.writefile(vim.split(content, "\n"), temp_file)
 
-  ui.notify("Generating detailed tasks_todo.md... (cmd: " .. vim.inspect(cmd) .. ")", vim.log.levels.INFO, { title = "My Plugin" })
+  ui.notify("Generating detailed tasks_todo.md... (cmd: " .. vim.inspect(cmd) .. ")", vim.log.levels.INFO, { title = "Ting" })
 
   local cmd = {
     "python3",
@@ -176,15 +176,15 @@ function M.confirm_task(buf, project_dir, old_win)
           else
             vim.cmd("vsplit " .. tasks_file)
           end
-          ui.notify("Generated tasks_todo.md successfully! (exit=" .. tostring(code) .. ")", vim.log.levels.INFO, { title = "My Plugin" })
+          ui.notify("Generated tasks_todo.md successfully! (exit=" .. tostring(code) .. ")", vim.log.levels.INFO, { title = "Ting" })
         else
-          ui.notify("Failed to generate tasks. (exit=" .. tostring(code) .. ")", vim.log.levels.ERROR, { title = "My Plugin" })
+          ui.notify("Failed to generate tasks. (exit=" .. tostring(code) .. ")", vim.log.levels.ERROR, { title = "Ting" })
         end
       end)
     end,
     on_stderr = function(_, err)
       if err and err[1] ~= "" then
-        ui.notify("Tasks Generator stderr: " .. table.concat(err, "\n"), vim.log.levels.ERROR, { title = "My Plugin" })
+        ui.notify("Tasks Generator stderr: " .. table.concat(err, "\n"), vim.log.levels.ERROR, { title = "Ting" })
       end
     end
   })
@@ -215,7 +215,7 @@ end
 function M.trigger_review_and_plan(comment_text, file_path)
   local project_dir = vim.fn.expand("~/ssd/17-AI-programma/mormor")
 
-  ui.notify("Reviewing code and proposing task... (cmd: " .. vim.inspect(cmd) .. ")", vim.log.levels.INFO, { title = "My Plugin" })
+  ui.notify("Reviewing code and proposing task... (cmd: " .. vim.inspect(cmd) .. ")", vim.log.levels.INFO, { title = "Ting" })
 
   local cmd = {
     "python3",

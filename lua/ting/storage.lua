@@ -1,9 +1,9 @@
 local M = {}
-local config = require("my_cool_plugin.config")
+local config = require("ting.config")
 
 -- Safe notify helper: use sidebar UI if already loaded, otherwise fallback to vim.notify
 local function safe_notify(msg, level, opts)
-  local ui_mod = package.loaded["my_cool_plugin.ui"]
+  local ui_mod = package.loaded["ting.ui"]
   if ui_mod and ui_mod.notify then
     ui_mod.notify(msg, level, opts)
   else
@@ -38,10 +38,10 @@ function M.save_comments(comments)
   local dir = vim.fn.fnamemodify(path, ":h")
 
   -- DEBUG INFO
-  safe_notify("Attempting to write to directory: " .. dir, vim.log.levels.INFO, { title = "My Plugin Debug" })
+  safe_notify("Attempting to write to directory: " .. dir, vim.log.levels.INFO, { title = "Ting Debug" })
 
   if vim.fn.isdirectory(dir) == 0 then
-    safe_notify("Directory does not exist. Creating it now...", vim.log.levels.WARN, { title = "My Plugin Debug" })
+    safe_notify("Directory does not exist. Creating it now...", vim.log.levels.WARN, { title = "Ting Debug" })
     vim.fn.mkdir(dir, "p")
   end
 
@@ -49,9 +49,9 @@ function M.save_comments(comments)
   local success = vim.fn.writefile({json_str}, path)
 
   if success == -1 then
-    safe_notify("CRITICAL ERROR: Failed to write comments to " .. path, vim.log.levels.ERROR, { title = "My Plugin" })
+    safe_notify("CRITICAL ERROR: Failed to write comments to " .. path, vim.log.levels.ERROR, { title = "Ting" })
   else
-    safe_notify("Successfully wrote file to disk at: " .. path, vim.log.levels.INFO, { title = "My Plugin Debug" })
+    safe_notify("Successfully wrote file to disk at: " .. path, vim.log.levels.INFO, { title = "Ting Debug" })
   end
 end
 
